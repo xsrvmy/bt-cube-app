@@ -41,6 +41,18 @@ function App() {
       <FaceletCube facelets={facelets}></FaceletCube>
       Pieces
       <FaceletCube facelets={getFacelets(cubeState)}></FaceletCube>
+      <footer>
+        &copy; 2025 Rui Ming (Max) Xiong
+        <br />
+        <a href="https://github.com/xsrvmy/bt-cube-app">Source code</a>
+        <br />
+        Thanks to smartcube implementation by{" "}
+        <a href="https://github.com/afedotov/gan-web-bluetooth">
+          gan-web-bluetooth
+        </a>
+        <br />
+        <a href="third-party.txt">Third party licenses</a>
+      </footer>
     </>
   );
 }
