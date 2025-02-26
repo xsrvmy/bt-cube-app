@@ -1,23 +1,22 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
-import { useDispatch, useSelector } from "react-redux";
 import FaceletCube from "./FaceletCube";
 import { getFacelets } from "./cube";
+import { useAppDispatch, useAppSelector } from "./hooks";
+import { connect, resetState } from "./cube.slice";
 
 function App() {
-  const dispatch = useDispatch();
-  const facelets = useSelector((state) => state.cube.facelets);
-  const connecting = useSelector((state) => state.cube.connecting);
-  const connected = useSelector((state) => state.cube.connected);
-  const cubeState = useSelector((state) => state.cube.cubeState);
+  const dispatch = useAppDispatch();
+  const facelets = useAppSelector((state) => state.cube.facelets);
+  const connecting = useAppSelector((state) => state.cube.connecting);
+  const connected = useAppSelector((state) => state.cube.connected);
+  const cubeState = useAppSelector((state) => state.cube.cubeState);
   const [mac, setMac] = useState("");
 
   return (
     <>
       {connected ? (
-        <button onClick={() => dispatch({ type: "RESET_STATE" })}>Reset</button>
+        <button onClick={() => dispatch(resetState())}>Reset</button>
       ) : (
         <>
           <form>
@@ -29,7 +28,7 @@ function App() {
             />
             {mac}
             <button
-              onClick={() => dispatch({ type: "CONNECT", mac: mac })}
+              onClick={() => dispatch(connect(mac))}
               disabled={connecting}
             >
               Connect{connecting && "ing"}
