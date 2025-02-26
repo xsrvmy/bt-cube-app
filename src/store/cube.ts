@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { applyMove, Cube, solvedCube } from "./cube";
+import { applyMove, Cube, solvedCube } from "../utils/cube";
 
 interface CubeSliceState {
   facelets: string;

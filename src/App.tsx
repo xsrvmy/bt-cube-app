@@ -1,9 +1,9 @@
 import { useState } from "react";
 import "./App.css";
 import FaceletCube from "./FaceletCube";
-import { getFacelets } from "./cube";
+import { getFacelets } from "./utils/cube";
 import { useAppDispatch, useAppSelector } from "./hooks";
-import { connect, resetState } from "./cube.slice";
+import { connect, resetState } from "./store/cube";
 
 function App() {
   const dispatch = useAppDispatch();

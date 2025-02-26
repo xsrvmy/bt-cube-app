@@ -11,7 +11,7 @@ import cubeReducer, {
   move,
   resetState,
   setFacelets,
-} from "./cube.slice.ts";
+} from "./cube.ts";
 
 // const cubeReducer = (state = defaultCube, action) => {
 //   if (action.type === "MOVE") {
