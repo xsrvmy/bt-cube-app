@@ -35,6 +35,7 @@ import cubeReducer, {
 //   return state;
 // };
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 const cubeMiddleware: Middleware<{}, RootState> = (store) => (next) => {
   let connection: GanCubeConnection | null = null;
 

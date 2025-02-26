@@ -57,7 +57,7 @@ export const solvedCube: Cube = {
   ep: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
 };
 
-function cycle(arr: any[], i1: number, i2: number, i3: number, i4: number) {
+function cycle(arr: unknown[], i1: number, i2: number, i3: number, i4: number) {
   const t = arr[i1];
   arr[i1] = arr[i4];
   arr[i4] = arr[i3];

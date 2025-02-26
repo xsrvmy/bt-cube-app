@@ -36,6 +36,7 @@ const cubeSlice = createSlice({
       state.facelets = action.payload.facelets;
       state.cubeState = action.payload.cubeState;
     },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     connect: (state, _: PayloadAction<string>) => {
       state.connecting = true;
     },
