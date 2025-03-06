@@ -182,3 +182,16 @@ export function dumpState({ co, cp, eo, ep }: Cube) {
   ep: [${ep}],
 }`;
 }
+
+export function combineStates(state1: Cube, state2: Cube): Cube {
+  const co = state2.cp.map((x, i) => (state1.co[x] + state2.co[i]) % 3);
+  const eo = state2.ep.map((x, i) => (state1.eo[x] + state2.eo[i]) % 2);
+  const cp = state2.cp.map((x) => state1.cp[x]);
+  const ep = state2.ep.map((x) => state1.ep[x]);
+  return {
+    co,
+    eo,
+    cp,
+    ep,
+  };
+}
