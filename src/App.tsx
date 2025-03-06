@@ -37,9 +37,9 @@ function App() {
         </>
       )}
       Facelets
-      <FaceletCube facelets={facelets}></FaceletCube>
+      <FaceletCube facelets={facelets} className="w-96"></FaceletCube>
       Pieces
-      <FaceletCube facelets={getFacelets(cubeState)}></FaceletCube>
+      <FaceletCube facelets={getFacelets(cubeState)} className="w-96"></FaceletCube>
       <footer className="footer footer-center">
         <div>
           <div>&copy; 2025 Rui Ming (Max) Xiong</div>
