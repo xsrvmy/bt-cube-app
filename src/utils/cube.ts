@@ -90,7 +90,7 @@ export function applyMove(cube: Cube, face: number, direction: number) {
     throw new Error();
   }
 
-  const newCube: Cube = { 
+  const newCube: Cube = {
     co: [...cube.co],
     eo: [...cube.eo],
     cp: [...cube.cp],
@@ -172,4 +172,13 @@ export function getFacelets(cube: Cube): string {
       (cs(Corners.DBR, 1) + es(Edges.DB, 1) + cs(Corners.DBL, 2))
     )
   ); // prettier-ignore
+}
+
+export function dumpState({ co, cp, eo, ep }: Cube) {
+  return `{
+  co: [${co}],
+  cp: [${cp}],
+  eo: [${eo}],
+  ep: [${ep}],
+}`;
 }

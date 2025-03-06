@@ -1,16 +1,13 @@
 import { useState } from "react";
 import "./App.css";
-import FaceletCube from "./FaceletCube";
-import { getFacelets } from "./utils/cube";
 import { useAppDispatch, useAppSelector } from "./hooks";
 import { connect, resetState } from "./store/cube";
+import Debug from "./Debug";
 
 function App() {
   const dispatch = useAppDispatch();
-  const facelets = useAppSelector((state) => state.cube.facelets);
   const connecting = useAppSelector((state) => state.cube.connecting);
   const connected = useAppSelector((state) => state.cube.connected);
-  const cubeState = useAppSelector((state) => state.cube.cubeState);
   const [mac, setMac] = useState("");
 
   return (
@@ -36,10 +33,7 @@ function App() {
           </form>
         </>
       )}
-      Facelets
-      <FaceletCube facelets={facelets} className="w-96"></FaceletCube>
-      Pieces
-      <FaceletCube facelets={getFacelets(cubeState)} className="w-96"></FaceletCube>
+      <Debug />
       <footer className="footer footer-center">
         <div>
           <div>&copy; 2025 Rui Ming (Max) Xiong</div>
