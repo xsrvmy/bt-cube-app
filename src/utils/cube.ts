@@ -195,3 +195,13 @@ export function combineStates(state1: Cube, state2: Cube): Cube {
     ep,
   };
 }
+
+export function compareStates(state1: Cube, state2: Cube): boolean {
+  for (const i in state1.co) {
+    if (state2.co[i] !== state1.co[i] || state2.cp[i] !== state1.cp[i])
+      return false;
+    if (state2.eo[i] !== state1.eo[i] || state2.ep[i] !== state1.ep[i])
+      return false;
+  }
+  return true
+}
