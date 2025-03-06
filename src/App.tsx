@@ -3,6 +3,7 @@ import "./App.css";
 import { useAppDispatch, useAppSelector } from "./hooks";
 import { connect, resetState } from "./store/cube";
 import Debug from "./Debug";
+import BldTrainer from "./BldTrainer";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -33,6 +34,7 @@ function App() {
           </form>
         </>
       )}
+      <BldTrainer />
       <Debug />
       <footer className="footer footer-center">
         <div>
