@@ -15,6 +15,7 @@ function Tile({ face }: { face: string }) {
         width: 30,
         height: 30,
       }}
+      className="rounded-sm"
     ></td>
   );
 }
