@@ -13,29 +13,38 @@ function App() {
 
   return (
     <>
-      {connected ? (
-        <button onClick={() => dispatch(resetState())}>Reset</button>
-      ) : (
-        <>
-          <form>
-            <input
-              autoComplete="current-password"
-              type="password"
-              value={mac}
-              onChange={(e) => setMac(e.target.value)}
-            />
-            {mac}
-            <button
-              onClick={() => dispatch(connect(mac))}
-              disabled={connecting}
-            >
-              Connect{connecting && "ing"}
-            </button>
-          </form>
-        </>
-      )}
       <BldTrainer />
       <Debug />
+      <div>
+        {connected ? (
+          <button
+            className="btn btn-primary"
+            onClick={() => dispatch(resetState())}
+          >
+            Reset
+          </button>
+        ) : (
+          <>
+            <form>
+              <input
+                className="input"
+                autoComplete="current-password"
+                type="password"
+                value={mac}
+                onChange={(e) => setMac(e.target.value)}
+              />
+              {mac}
+              <button
+                className="btn btn-primary"
+                onClick={() => dispatch(connect(mac))}
+                disabled={connecting}
+              >
+                Connect{connecting && "ing"}
+              </button>
+            </form>
+          </>
+        )}
+      </div>
       <footer className="footer footer-center">
         <div>
           <div>&copy; 2025 Rui Ming (Max) Xiong</div>

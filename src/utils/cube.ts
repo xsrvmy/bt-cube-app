@@ -1,4 +1,4 @@
-enum Edges {
+export enum Edges {
   UR,
   UF,
   UL,
@@ -14,7 +14,7 @@ enum Edges {
 }
 const ES = ["UUUUDDDDFFBB", "RFLBRFLBRLLR", "UUUUDDDDFFBB", "RFLBRFLBRLLR"];
 
-enum Corners {
+export enum Corners {
   UFR,
   UFL,
   UBL,
@@ -34,7 +34,7 @@ const CS = [
   "RFLBFLBR",
 ];
 
-enum Faces {
+export enum Faces {
   U,
   R,
   F,

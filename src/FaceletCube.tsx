@@ -11,8 +11,8 @@ const colorMap = {
 function Tile({ face }: { face: string }) {
   return (
     <div
-      style={{ borderRadius: "20%" }}
-      className={`${colorMap[face]} aspect-square w-1/12 inline-block`}
+      // style={{ borderRadius: "20%" }}
+      className={`${colorMap[face]} rounded-[30%] aspect-square w-1/12 inline-block`}
     ></div>
   );
 }
