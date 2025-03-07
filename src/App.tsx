@@ -13,8 +13,12 @@ function App() {
 
   return (
     <>
-      <BldTrainer />
-      <Debug />
+      <div className="flex-auto">
+        <BldTrainer />
+      </div>
+      <div>
+        <Debug />
+      </div>
       <div>
         {connected ? (
           <button
