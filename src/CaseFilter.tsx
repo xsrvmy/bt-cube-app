@@ -1,11 +1,12 @@
 import { useRef } from "react";
 
 interface P {
-  cases: string[];
+  cases: [string, boolean][];
   className?: string;
+  onChange: (newValue: [string, boolean][]) => void;
 }
 
-export default function CaseFilter({ cases, className }: P) {
+export default function CaseFilter({ cases, className, onChange }: P) {
   const dialog = useRef<HTMLDialogElement>(null);
   return (
     <>
@@ -26,8 +27,14 @@ export default function CaseFilter({ cases, className }: P) {
                     type="checkbox"
                     key={i}
                     className="checkbox checkbox-primary checkbox-sm"
+                    checked={c[1]}
+                    onChange={(e) => {
+                      const newCases = [...cases];
+                      newCases[i] = [newCases[i][0], e.target.checked];
+                      onChange(newCases);
+                    }}
                   />
-                  {c}
+                  {c[0]}
                 </label>
               </div>
             ))}

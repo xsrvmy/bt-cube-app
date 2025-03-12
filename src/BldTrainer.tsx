@@ -79,13 +79,16 @@ function filterCases(filter: [number, number][]): typeof cornerCases {
 }
 
 export default function BldTrainer() {
+  const buffer = Corners.UFR;
+  const bo = 0;
+  const corners = true;
   const cubeState = useAppSelector((state) => state.cube.cubeState);
   const [startState, setStartState] = useState(cubeState);
   const [targetState, setTargetState] = useState(solvedCube);
   const [lock, setLock] = useState(false);
   const [wrong, setWrong] = useState(false);
   const [caseName, setCaseName] = useState("loading");
-  const [caseFilter, setCaseFilter] = useState<[number, number][]>([[1, 0]]);
+  const [caseFilter, setCaseFilter] = useState<[number, number][]>([]);
   const correct = compareStates(
     combineStates(startState, targetState),
     cubeState
@@ -110,6 +113,23 @@ export default function BldTrainer() {
     }
   }, [correct, lock, wrong, caseFilter, cubeState]);
 
+  const casesList: [string, boolean][] = [];
+
+  if (corners) {
+    for (let i = 0; i < 8; ++i) {
+      if (i !== buffer) {
+        for (let o = 0; o < 3; ++o) {
+          casesList.push([
+            CORNER_LETTER_SCHEME[o][i],
+            caseFilter.some((x) => x[0] === i && x[1] === o),
+          ]);
+        }
+      }
+    }
+  } else {
+    throw new Error();
+  }
+
   return (
     <div className="flex flex-col text-center h-96">
       <div className="flex-auto" />
@@ -126,7 +146,24 @@ export default function BldTrainer() {
       >
         Reset
       </button>
-      <CaseFilter cases={"ABDEFGHIKLNOPQRSTUVWX".split("")} />
+      <CaseFilter
+        cases={casesList}
+        onChange={(v) => {
+          const filter: typeof caseFilter = [];
+          for (const [c, t] of v) {
+            if (t) {
+              for (let co = 0; co < CORNER_LETTER_SCHEME.length; ++co) {
+                const idx = CORNER_LETTER_SCHEME[co].indexOf(c);
+                if (idx >= 0) {
+                  filter.push([idx, co]);
+                  break;
+                }
+              }
+            }
+          }
+          setCaseFilter(filter);
+        }}
+      />
     </div>
   );
 }
