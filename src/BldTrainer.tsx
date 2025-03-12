@@ -7,6 +7,7 @@ import {
   Cube,
   solvedCube,
 } from "./utils/cube";
+import CaseFilter from "./CaseFilter";
 
 const CORNER_LETTER_SCHEME = ["CDABVUXW", "MIEQKGSO", "JFRNPLHT"];
 
@@ -110,7 +111,7 @@ export default function BldTrainer() {
   }, [correct, lock, wrong, caseFilter, cubeState]);
 
   return (
-    <div className="flex flex-col text-center h-80">
+    <div className="flex flex-col text-center h-96">
       <div className="flex-auto" />
       <div className="text-6xl font-mono">
         {lock ? "Locked" : correct ? "Solved" : caseName}
@@ -125,6 +126,7 @@ export default function BldTrainer() {
       >
         Reset
       </button>
+      <CaseFilter cases={"ABDEFGHIKLNOPQRSTUVWX".split("")} />
     </div>
   );
 }
