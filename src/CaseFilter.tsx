@@ -21,21 +21,23 @@ export default function CaseFilter({ cases, className, onChange }: P) {
           <fieldset className="fieldset">
             <legend className="fieldset-legend">Filter</legend>
             {cases.map((c, i) => (
-              <div>
-                <label className="fieldset-label">
-                  <input
-                    type="checkbox"
-                    key={i}
-                    className="checkbox checkbox-primary checkbox-sm"
-                    checked={c[1]}
-                    onChange={(e) => {
-                      const newCases = [...cases];
-                      newCases[i] = [newCases[i][0], e.target.checked];
-                      onChange(newCases);
-                    }}
-                  />
+              <div className="join">
+                <button
+                  className={`btn btn-xs join-item ${
+                    c[1] ? "btn-success" : ""
+                  }`}
+                  onClick={() => {
+                    const newCases = [...cases];
+                    newCases[i] = [newCases[i][0], !c[1]];
+                    onChange(newCases);
+                  }}
+                >
+                  +
+                </button>
+                <button className="btn btn-xs join-item flex-auto">
                   {c[0]}
-                </label>
+                </button>
+                <button className="btn btn-xs join-item">-</button>
               </div>
             ))}
           </fieldset>

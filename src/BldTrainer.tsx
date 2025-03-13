@@ -1,12 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "./hooks";
-import {
-  combineStates,
-  compareStates,
-  Corners,
-  Cube,
-  solvedCube,
-} from "./utils/cube";
+import { combineStates, compareStates, Corners, Cube } from "./utils/cube";
 import CaseFilter from "./CaseFilter";
 import {
   markCornersCaseCorrect,
