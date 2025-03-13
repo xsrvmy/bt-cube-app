@@ -12,6 +12,7 @@ import cubeReducer, {
   resetState,
   setFacelets,
 } from "./cube.ts";
+import casesReducer from "./cases.ts";
 
 // const cubeReducer = (state = defaultCube, action) => {
 //   if (action.type === "MOVE") {
@@ -84,6 +85,7 @@ const cubeMiddleware: Middleware<{}, RootState> = (store) => (next) => {
 
 const rootReducer = combineReducers({
   cube: cubeReducer,
+  cases: casesReducer,
 });
 
 const store = configureStore({
