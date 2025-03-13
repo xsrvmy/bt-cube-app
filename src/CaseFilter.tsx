@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { useAppSelector } from "./hooks";
 import { replaced } from "./utils/replace";
+import { MinusIcon, PlusIcon } from "@heroicons/react/16/solid";
 
 interface P {
   filters: [string, boolean][];
@@ -36,12 +37,14 @@ export default function CaseFilter({ filters, className, onChange }: P) {
                     onChange(newCases);
                   }}
                 >
-                  +
+                  <PlusIcon className="size-4" />
                 </button>
-                <button className="btn btn-xs join-item flex-auto">
+                <span className="btn btn-xs join-item flex-auto">
                   {replaced(tags[c[0]].name)}
+                </span>
+                <button className="btn btn-xs join-item">
+                  <MinusIcon className="size-4" />
                 </button>
-                <button className="btn btn-xs join-item">-</button>
               </div>
             ))}
           </fieldset>

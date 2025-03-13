@@ -118,7 +118,7 @@ export default function BldTrainer() {
       <div className="text-6xl font-mono">
         {lock ? "Locked" : correct ? "Solved" : caseName}
       </div>
-      <div className="flex-auto">{caseFilter}</div>
+      <div className="flex-auto"></div>
       <div className="flex flex-row gap-4 p-4">
         <button
           className="btn btn-primary flex-auto"
