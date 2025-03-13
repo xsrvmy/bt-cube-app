@@ -6,6 +6,7 @@ export interface WeightedCase {
   weight: number;
   index: number;
   name: string;
+  tags: string[];
 }
 
 interface Tag {
@@ -26,6 +27,7 @@ const defaultState: CasesState = {
     name: `{corner-${x[2]}-${x[3]}}{corner-${x[4]}-${x[5]}}`,
     weight: 1,
     index: i,
+    tags: [`corner-${x[2]}-${x[3]}`, `corner-${x[4]}-${x[5]}`],
   })),
   tags: getCycleTags(Corners.UFR, 8, 3),
 };
@@ -72,9 +74,11 @@ const casesSlice = createSlice({
   initialState: defaultState,
   reducers: {
     markCornersCaseCorrect: (state, action: PayloadAction<number>) => {
+      if (action.payload < 0) return;
       state.corners[action.payload].weight *= 0.5;
     },
     markCornersCaseIncorrect: (state, action: PayloadAction<number>) => {
+      if (action.payload < 0) return;
       state.corners[action.payload].weight *= 2;
       if (state.corners[action.payload].weight < 2) {
         state.corners[action.payload].weight = 2;

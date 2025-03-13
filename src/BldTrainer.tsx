@@ -7,28 +7,7 @@ import {
   markCornersCaseIncorrect,
   WeightedCase,
 } from "./store/cases";
-
-const CORNER_LETTER_SCHEME = ["CDABVUXW", "MIEQKGSO", "JFRNPLHT"];
-
-function generateReplacements() {
-  const output: { [key: string]: string } = {};
-  for (let i = 0; i < 8; ++i) {
-    for (let j = 0; j < 3; ++j) {
-      output[`corner-${i}-${j}`] = "(" + CORNER_LETTER_SCHEME[j][i] + ")";
-    }
-  }
-  return output;
-}
-
-const replacements = generateReplacements();
-
-function replaced(str: string): string {
-  let s = str;
-  for (const k in replacements) {
-    s = s.replace(`{${k}}`, replacements[k]);
-  }
-  return s;
-}
+import { replaced } from "./utils/replace";
 
 function selectCase(cases: WeightedCase[]): WeightedCase {
   const sum = cases.map((x) => x.weight).reduce((x, y) => x + y, 0);
@@ -64,18 +43,11 @@ function generateCornerCase(case_: WeightedCase): Cube {
   };
 }
 
-function filterCases(
-  cases: WeightedCase[],
-  filter: [number, number][]
-): typeof cases {
+function filterCases(cases: WeightedCase[], filter: string[]): typeof cases {
   if (filter.length === 0) {
     return cases;
   }
-  return cases.filter(({ case_: [, , c1, co1, c2, co2] }) => {
-    return filter.some(
-      ([c, o]) => (c1 === c && co1 === o) || (c2 === c && co2 === o)
-    );
-  });
+  return cases.filter((c) => filter.some((f) => c.tags.indexOf(f) >= 0));
 }
 
 export default function BldTrainer() {
@@ -85,21 +57,21 @@ export default function BldTrainer() {
   const corners = true;
   const cubeState = useAppSelector((state) => state.cube.cubeState);
   const cases = useAppSelector((state) => state.cases);
+  const filterList = useAppSelector((state) => Object.keys(state.cases.tags));
   const [currentCase, setCurrentCase] = useState<WeightedCase>({
     case_: [0, 0, 1, 0, 2, 0],
-    name: "",
+    name: "--",
     index: -1,
     weight: 0,
+    tags: [],
   });
   const [startState, setStartState] = useState(cubeState);
-  // const [targetState, setTargetState] = useState(solvedCube);
   const targetState = generateCornerCase(currentCase);
   const caseName = replaced(currentCase.name);
   const [lock, setLock] = useState(false);
   const [wrong, setWrong] = useState(false);
   const [reset, setReset] = useState(false);
-  // const [caseName, setCaseName] = useState("loading");
-  const [caseFilter, setCaseFilter] = useState<[number, number][]>([]);
+  const [caseFilter, setCaseFilter] = useState<string[]>([]);
   const correct = compareStates(
     combineStates(startState, targetState),
     cubeState
@@ -140,36 +112,13 @@ export default function BldTrainer() {
     dispatch,
   ]);
 
-  const casesList: [string, boolean][] = [];
-
-  if (corners) {
-    for (let i = 0; i < 8; ++i) {
-      if (i !== buffer) {
-        for (let o = 0; o < 3; ++o) {
-          casesList.push([
-            CORNER_LETTER_SCHEME[o][i],
-            caseFilter.some((x) => x[0] === i && x[1] === o),
-          ]);
-        }
-      }
-    }
-  } else {
-    throw new Error();
-  }
-
   return (
     <div className="flex flex-col text-center h-96">
       <div className="flex-auto" />
       <div className="text-6xl font-mono">
         {lock ? "Locked" : correct ? "Solved" : caseName}
       </div>
-      <div className="flex-auto">
-        Wrong: {wrong ? "Y" : "N"}
-        <br />
-        Reset: {reset ? "Y" : "N"}
-        <br />
-        Right: {correct ? "Y" : "N"}
-      </div>
+      <div className="flex-auto">{caseFilter}</div>
       <div className="flex flex-row gap-4 p-4">
         <button
           className="btn btn-primary flex-auto"
@@ -192,21 +141,9 @@ export default function BldTrainer() {
         </button>
       </div>
       <CaseFilter
-        cases={casesList}
+        filters={filterList.map((x) => [x, caseFilter.indexOf(x) >= 0])}
         onChange={(v) => {
-          const filter: typeof caseFilter = [];
-          for (const [c, t] of v) {
-            if (t) {
-              for (let co = 0; co < CORNER_LETTER_SCHEME.length; ++co) {
-                const idx = CORNER_LETTER_SCHEME[co].indexOf(c);
-                if (idx >= 0) {
-                  filter.push([idx, co]);
-                  break;
-                }
-              }
-            }
-          }
-          setCaseFilter(filter);
+          setCaseFilter(v.filter((x) => x[1]).map((x) => x[0]));
         }}
       />
     </div>
