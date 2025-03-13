@@ -5,19 +5,46 @@ export interface WeightedCase {
   case_: [number, number, number, number, number, number];
   weight: number;
   index: number;
+  name: string;
 }
 
+interface Tag {
+  key: string;
+  name: string;
+  parent?: string;
+}
 interface CasesState {
+  tags: {
+    [key: string]: Tag;
+  };
   corners: WeightedCase[];
 }
 
 const defaultState: CasesState = {
   corners: enumerateCycleCases(Corners.UFR, 0, 8, 3).map((x, i) => ({
     case_: x,
+    name: `{corner-${x[2]}-${x[3]}}{corner-${x[4]}-${x[5]}}`,
     weight: 1,
     index: i,
   })),
+  tags: getCycleTags(Corners.UFR, 8, 3),
 };
+
+function getCycleTags(buffer: number, pieceCount: number, oLimit: number) {
+  const tags: CasesState["tags"] = {};
+  for (let i = 0; i < pieceCount; ++i) {
+    for (let o = 0; o < oLimit; ++o) {
+      if (i !== buffer) {
+        const key = `corner-${i}-${o}`;
+        tags[key] = {
+          key,
+          name: `{corner-${i}-${o}}`,
+        };
+      }
+    }
+  }
+  return tags;
+}
 
 function enumerateCycleCases(
   buffer: number,

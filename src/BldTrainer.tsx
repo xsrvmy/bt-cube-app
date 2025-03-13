@@ -10,6 +10,26 @@ import {
 
 const CORNER_LETTER_SCHEME = ["CDABVUXW", "MIEQKGSO", "JFRNPLHT"];
 
+function generateReplacements() {
+  const output: { [key: string]: string } = {};
+  for (let i = 0; i < 8; ++i) {
+    for (let j = 0; j < 3; ++j) {
+      output[`corner-${i}-${j}`] = "(" + CORNER_LETTER_SCHEME[j][i] + ")";
+    }
+  }
+  return output;
+}
+
+const replacements = generateReplacements();
+
+function replaced(str: string): string {
+  let s = str;
+  for (const k in replacements) {
+    s = s.replace(`{${k}}`, replacements[k]);
+  }
+  return s;
+}
+
 function selectCase(cases: WeightedCase[]): WeightedCase {
   const sum = cases.map((x) => x.weight).reduce((x, y) => x + y, 0);
   let rand = Math.random() * sum;
@@ -23,7 +43,7 @@ function selectCase(cases: WeightedCase[]): WeightedCase {
   return cases[cases.length - 1];
 }
 
-function generateCornerCase(case_: WeightedCase): [Cube, string] {
+function generateCornerCase(case_: WeightedCase): Cube {
   const [buffer, bo, c1, co1, c2, co2] = case_.case_;
 
   const co = [0, 0, 0, 0, 0, 0, 0, 0];
@@ -36,15 +56,12 @@ function generateCornerCase(case_: WeightedCase): [Cube, string] {
   cp[c1] = buffer;
   cp[buffer] = c2;
   cp[c2] = c1;
-  return [
-    {
-      co,
-      cp,
-      eo: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      ep: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-    },
-    CORNER_LETTER_SCHEME[co1][c1] + CORNER_LETTER_SCHEME[co2][c2],
-  ];
+  return {
+    co,
+    cp,
+    eo: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    ep: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+  };
 }
 
 function filterCases(
@@ -70,12 +87,14 @@ export default function BldTrainer() {
   const cases = useAppSelector((state) => state.cases);
   const [currentCase, setCurrentCase] = useState<WeightedCase>({
     case_: [0, 0, 1, 0, 2, 0],
+    name: "",
     index: -1,
     weight: 0,
   });
   const [startState, setStartState] = useState(cubeState);
   // const [targetState, setTargetState] = useState(solvedCube);
-  const [targetState, caseName] = generateCornerCase(currentCase);
+  const targetState = generateCornerCase(currentCase);
+  const caseName = replaced(currentCase.name);
   const [lock, setLock] = useState(false);
   const [wrong, setWrong] = useState(false);
   const [reset, setReset] = useState(false);
@@ -100,13 +119,8 @@ export default function BldTrainer() {
 
       setTimeout(() => {
         const _case = selectCase(filterCases(cases.corners, caseFilter));
-        // const [state, name] = generateCornerCase(
-        //   _case
-        // );
         setLock(false);
         setCurrentCase(_case);
-        // setTargetState(state);
-        // setCaseName(name);
         setStartState(cubeState);
         // TODO there is a bug here where the latest cube state is not read
         // TODO need to clean up this timeout somehow
