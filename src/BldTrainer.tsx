@@ -8,6 +8,7 @@ import {
   WeightedCase,
 } from "./store/cases";
 import { replaced } from "./utils/replace";
+import Settings from "./Settings";
 
 function selectCase(cases: WeightedCase[]): WeightedCase {
   const sum = cases.map((x) => x.weight).reduce((x, y) => x + y, 0);
@@ -58,6 +59,7 @@ export default function BldTrainer() {
   const cubeState = useAppSelector((state) => state.cube.cubeState);
   const cases = useAppSelector((state) => state.cases);
   const filterList = useAppSelector((state) => Object.keys(state.cases.tags));
+  const cornerScheme = useAppSelector((state) => state.settings.cornerScheme);
   const [currentCase, setCurrentCase] = useState<WeightedCase>({
     case_: [0, 0, 1, 0, 2, 0],
     name: "--",
@@ -67,7 +69,7 @@ export default function BldTrainer() {
   });
   const [startState, setStartState] = useState(cubeState);
   const targetState = generateCornerCase(currentCase);
-  const caseName = replaced(currentCase.name);
+  const caseName = replaced(currentCase.name, cornerScheme);
   const [lock, setLock] = useState(false);
   const [wrong, setWrong] = useState(false);
   const [reset, setReset] = useState(false);
@@ -146,6 +148,7 @@ export default function BldTrainer() {
           setCaseFilter(v.filter((x) => x[1]).map((x) => x[0]));
         }}
       />
+      <Settings />
     </div>
   );
 }

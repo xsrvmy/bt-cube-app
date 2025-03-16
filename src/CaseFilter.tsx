@@ -12,6 +12,7 @@ interface P {
 export default function CaseFilter({ filters, className, onChange }: P) {
   const dialog = useRef<HTMLDialogElement>(null);
   const tags = useAppSelector((state) => state.cases.tags);
+  const cornerScheme = useAppSelector((state) => state.settings.cornerScheme);
 
   return (
     <>
@@ -40,7 +41,7 @@ export default function CaseFilter({ filters, className, onChange }: P) {
                   <PlusIcon className="size-4" />
                 </button>
                 <span className="btn btn-xs join-item flex-auto">
-                  {replaced(tags[c[0]].name)}
+                  {replaced(tags[c[0]].name, cornerScheme)}
                 </span>
                 <button className="btn btn-xs join-item">
                   <MinusIcon className="size-4" />
