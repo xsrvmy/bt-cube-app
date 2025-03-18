@@ -67,9 +67,15 @@ function App() {
               gan-web-bluetooth
             </a>
           </div>
-          <a href="third-party.txt" className="link link-primary">
-            Third party licenses
-          </a>
+          <div>
+            Third party licenses{" "}
+            <a href="third-party.txt" className="link link-primary">
+              npm packages
+            </a>{" "}
+            <a href="rubik-ofl.txt" className="link link-primary">
+              font
+            </a>
+          </div>
         </div>
       </footer>
     </>

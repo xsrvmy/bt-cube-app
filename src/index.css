@@ -1,2 +1,17 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+@font-face {
+  font-family: rubik;
+  src: url(Rubik-VariableFont_wght.ttf);
+}
+
+@font-face {
+  font-family: rubik;
+  src: url(Rubik-Italic-VariableFont_wght.ttf);
+  font-style: italic;
+}
+
+@theme {
+  --font-sans: rubik;
+}
