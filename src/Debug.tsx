@@ -31,6 +31,7 @@ export default function Debug() {
             value={dumpState(cubeState)}
             className="textarea h-48 w-72"
             onFocus={(e) => e.target.select()}
+            readOnly
           ></textarea>
         </div>
         <form method="dialog" className="modal-backdrop">

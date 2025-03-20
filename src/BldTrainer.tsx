@@ -58,7 +58,8 @@ export default function BldTrainer() {
   const corners = true;
   const cubeState = useAppSelector((state) => state.cube.cubeState);
   const cases = useAppSelector((state) => state.cases);
-  const filterList = useAppSelector((state) => Object.keys(state.cases.tags));
+  const tags = useAppSelector((state) => state.cases.tags)
+  const filterList = Object.keys(tags);
   const cornerScheme = useAppSelector((state) => state.settings.cornerScheme);
   const [currentCase, setCurrentCase] = useState<WeightedCase>({
     case_: [0, 0, 1, 0, 2, 0],

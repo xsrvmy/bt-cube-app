@@ -27,7 +27,7 @@ export default function CaseFilter({ filters, className, onChange }: P) {
           <fieldset className="fieldset">
             <legend className="fieldset-legend">Filter</legend>
             {filters.map((c, i) => (
-              <div className="join">
+              <div className="join" key={i}>
                 <button
                   className={`btn btn-xs join-item ${
                     c[1] ? "btn-success" : ""
