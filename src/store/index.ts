@@ -1,8 +1,8 @@
 import {
   combineReducers,
   configureStore,
+  createListenerMiddleware,
   Middleware,
-  Tuple,
 } from "@reduxjs/toolkit";
 import { connectGanCube, GanCubeConnection } from "gan-web-bluetooth";
 import cubeReducer, {
@@ -15,28 +15,6 @@ import cubeReducer, {
 import casesReducer from "./cases.ts";
 import settingsReducer from "./settings.ts";
 import weightsReducer from "./weights.ts";
-
-// const cubeReducer = (state = defaultCube, action) => {
-//   if (action.type === "MOVE") {
-//     return {
-//       ...state,
-//       cubeState: applyMove(state.cubeState, action.face, action.direction),
-//     };
-//   }
-//   if (action.type === "FACELETS") {
-//     return { ...state, facelets: action.facelets, cubeState: action.cubeState };
-//   }
-//   if (action.type === "CONNECT") {
-//     return { ...state, connecting: true };
-//   }
-//   if (action.type === "CONNECTED") {
-//     return { ...state, connected: true, connecting: false };
-//   }
-//   if (action.type === "RESET_STATE") {
-//     return { ...state, cubeState: solvedCube };
-//   }
-//   return state;
-// };
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 const cubeMiddleware: Middleware<{}, RootState> = (store) => (next) => {
@@ -85,6 +63,18 @@ const cubeMiddleware: Middleware<{}, RootState> = (store) => (next) => {
   };
 };
 
+const saveStoreMiddleware = createListenerMiddleware();
+saveStoreMiddleware.startListening.withTypes<RootState>()({
+  // matcher: isAnyOf(markCaseCorrect, markCaseIncorrect),
+  predicate(_action, currentState, originalState) {
+    return currentState.weights != originalState.weights;
+  },
+  effect: (_, api) => {
+    console.log(api.getState().weights);
+    localStorage.setItem("weights", JSON.stringify(api.getState().weights));
+  },
+});
+
 const rootReducer = combineReducers({
   cube: cubeReducer,
   cases: casesReducer,
@@ -94,7 +84,13 @@ const rootReducer = combineReducers({
 
 const store = configureStore({
   reducer: rootReducer,
-  middleware: () => new Tuple(cubeMiddleware),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware()
+      .concat(cubeMiddleware)
+      .concat(saveStoreMiddleware.middleware),
+  preloadedState: {
+    weights: JSON.parse(localStorage.getItem("weights") || "{}"),
+  },
 });
 export default store;
 export type AppStore = typeof store;

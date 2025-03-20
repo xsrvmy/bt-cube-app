@@ -132,17 +132,17 @@ export default function BldTrainer() {
 
   return (
     <div className="flex flex-col text-center h-96">
-      <div className="flex-auto flex flex-col">
+      <div className="flex-1 flex flex-col">
         <div className="flex-auto"></div>
         <div>{corners ? "Corners" : "Edges"}</div>
       </div>
       <div className="text-6xl font-mono">
         {lock ? "Locked" : correct ? "Solved" : caseName}
       </div>
-      <div className="flex-auto"></div>
+      <div className="flex-1"></div>
       <div className="flex flex-row gap-4 p-4">
         <button
-          className="btn btn-primary flex-auto"
+          className="btn btn-primary flex-1"
           disabled={lock}
           onClick={() => {
             setReset(true);
@@ -152,7 +152,7 @@ export default function BldTrainer() {
         </button>
 
         <button
-          className="btn btn-error flex-auto"
+          className="btn btn-error flex-1"
           disabled={lock}
           onClick={() => {
             setWrong(true);
@@ -162,7 +162,7 @@ export default function BldTrainer() {
         </button>
 
         <button
-          className="btn btn-success flex-auto"
+          className="btn btn-success flex-1"
           disabled={lock}
           onClick={() => {
             setForceCorrect(true);

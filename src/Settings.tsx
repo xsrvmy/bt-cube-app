@@ -11,8 +11,9 @@ export default function LetterSchemeEditor({ className }: P) {
   const dispatch = useAppDispatch();
 
   function changeCorners() {
-    const scheme =
-      prompt("Enter your letter scheme, following the speffz order:");
+    const scheme = prompt(
+      "Enter your letter scheme, following the speffz order:"
+    );
     if (!scheme) return;
     if (scheme.length !== 24) {
       alert("Invalid length");
@@ -30,9 +31,20 @@ export default function LetterSchemeEditor({ className }: P) {
         Settings
       </button>
       <dialog className="modal" ref={dialog}>
-        <div className="modal-box">
+        <div className="modal-box flex flex-col gap-4">
           <button className="btn btn-primary" onClick={changeCorners}>
             Change Corners
+          </button>
+          <button
+            className="btn btn-error"
+            onClick={() => {
+              if (confirm("Clear all?")) {
+                localStorage.clear();
+                location.reload();
+              }
+            }}
+          >
+            Reset
           </button>
         </div>
         <form method="dialog" className="modal-backdrop">
