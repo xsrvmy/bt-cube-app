@@ -67,11 +67,14 @@ const saveStoreMiddleware = createListenerMiddleware();
 saveStoreMiddleware.startListening.withTypes<RootState>()({
   // matcher: isAnyOf(markCaseCorrect, markCaseIncorrect),
   predicate(_action, currentState, originalState) {
-    return currentState.weights != originalState.weights;
+    return currentState.weights.data != originalState.weights.data;
   },
   effect: (_, api) => {
-    console.log(api.getState().weights);
-    localStorage.setItem("weights", JSON.stringify(api.getState().weights));
+    console.log(api.getState().weights.data);
+    localStorage.setItem(
+      "weights",
+      JSON.stringify(api.getState().weights.data)
+    );
   },
 });
 
@@ -89,7 +92,9 @@ const store = configureStore({
       .concat(cubeMiddleware)
       .concat(saveStoreMiddleware.middleware),
   preloadedState: {
-    weights: JSON.parse(localStorage.getItem("weights") || "{}"),
+    weights: {
+      data: JSON.parse(localStorage.getItem("weights") || "{}"),
+    },
   },
 });
 export default store;

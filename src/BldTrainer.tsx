@@ -3,15 +3,19 @@ import { useAppDispatch, useAppSelector } from "./hooks";
 import { combineStates, compareStates, Cube } from "./utils/cube";
 import CaseFilter from "./CaseFilter";
 import {
+  clearPrevious,
   markCaseCorrect,
   markCaseIncorrect,
-  WeightsState,
+  undoPrevious,
 } from "./store/weights";
 import { replaced } from "./utils/replace";
 import Settings from "./Settings";
 import { BaseCase, BldCase } from "./store/cases";
 
-function selectCase<P extends BaseCase>(cases: P[], weights: WeightsState): P {
+function selectCase<P extends BaseCase>(
+  cases: P[],
+  weights: { [key: string]: number }
+): P {
   const sum = cases.map((x) => weights[x.key] || 1).reduce((x, y) => x + y, 0);
   let rand = Math.random() * sum;
 
@@ -59,7 +63,8 @@ export default function BldTrainer() {
   const cubeState = useAppSelector((state) => state.cube.cubeState);
   const cases = useAppSelector((state) => state.cases);
   const tags = useAppSelector((state) => state.cases.tags);
-  const weights = useAppSelector((state) => state.weights);
+  const weights = useAppSelector((state) => state.weights.data);
+  const hasPrevious = useAppSelector((state) => !!state.weights.previous);
   const filterList = Object.keys(tags);
   const cornerScheme = useAppSelector((state) => state.settings.cornerScheme);
   const [currentCase, setCurrentCase] = useState<BldCase>({
@@ -131,7 +136,7 @@ export default function BldTrainer() {
   ]);
 
   return (
-    <div className="flex flex-col text-center h-96">
+    <div className="flex flex-col text-center h-160">
       <div className="flex-1 flex flex-col">
         <div className="flex-auto"></div>
         <div>{corners ? "Corners" : "Edges"}</div>
@@ -145,6 +150,7 @@ export default function BldTrainer() {
           className="btn btn-primary flex-1"
           disabled={lock}
           onClick={() => {
+            dispatch(clearPrevious());
             setReset(true);
           }}
         >
@@ -169,6 +175,40 @@ export default function BldTrainer() {
           }}
         >
           Force Correct
+        </button>
+      </div>
+      <div className="flex flex-row gap-4 p-4 pt-0">
+        <button
+          className="btn btn-primary flex-1"
+          disabled={lock || !hasPrevious}
+          onClick={() => {
+            dispatch(undoPrevious());
+            // setReset(true);
+          }}
+        >
+          P Reset
+        </button>
+
+        <button
+          className="btn btn-error flex-1"
+          disabled={lock || !hasPrevious}
+          onClick={() => {
+            dispatch(markCaseIncorrect(0));
+            // setReset(true);
+          }}
+        >
+          P Wrong
+        </button>
+
+        <button
+          className="btn btn-success flex-1"
+          disabled={lock || !hasPrevious}
+          onClick={() => {
+            dispatch(markCaseCorrect(0));
+            // setReset(true);
+          }}
+        >
+          P Correct
         </button>
       </div>
       <CaseFilter
