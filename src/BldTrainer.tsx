@@ -1,21 +1,22 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "./hooks";
-import { combineStates, compareStates, Corners, Cube } from "./utils/cube";
+import { combineStates, compareStates, Cube } from "./utils/cube";
 import CaseFilter from "./CaseFilter";
 import {
-  markCornersCaseCorrect,
-  markCornersCaseIncorrect,
-  WeightedCase,
-} from "./store/cases";
+  markCaseCorrect,
+  markCaseIncorrect,
+  WeightsState,
+} from "./store/weights";
 import { replaced } from "./utils/replace";
 import Settings from "./Settings";
+import { BaseCase, BldCase } from "./store/cases";
 
-function selectCase(cases: WeightedCase[]): WeightedCase {
-  const sum = cases.map((x) => x.weight).reduce((x, y) => x + y, 0);
+function selectCase<P extends BaseCase>(cases: P[], weights: WeightsState): P {
+  const sum = cases.map((x) => weights[x.key] || 1).reduce((x, y) => x + y, 0);
   let rand = Math.random() * sum;
 
   for (const c of cases) {
-    rand -= c.weight;
+    rand -= weights[c.key] || 1;
     if (rand <= 0) {
       return c;
     }
@@ -23,7 +24,7 @@ function selectCase(cases: WeightedCase[]): WeightedCase {
   return cases[cases.length - 1];
 }
 
-function generateCornerCase(case_: WeightedCase): Cube {
+function generateCornerCase(case_: BldCase): Cube {
   const [buffer, bo, c1, co1, c2, co2] = case_.case_;
 
   const co = [0, 0, 0, 0, 0, 0, 0, 0];
@@ -44,7 +45,7 @@ function generateCornerCase(case_: WeightedCase): Cube {
   };
 }
 
-function filterCases(cases: WeightedCase[], filter: string[]): typeof cases {
+function filterCases<P extends BaseCase>(cases: P[], filter: string[]): P[] {
   if (filter.length === 0) {
     return cases;
   }
@@ -53,27 +54,30 @@ function filterCases(cases: WeightedCase[], filter: string[]): typeof cases {
 
 export default function BldTrainer() {
   const dispatch = useAppDispatch();
-  const buffer = Corners.UFR;
-  const bo = 0;
+
   const corners = true;
   const cubeState = useAppSelector((state) => state.cube.cubeState);
   const cases = useAppSelector((state) => state.cases);
-  const tags = useAppSelector((state) => state.cases.tags)
+  const tags = useAppSelector((state) => state.cases.tags);
+  const weights = useAppSelector((state) => state.weights);
   const filterList = Object.keys(tags);
   const cornerScheme = useAppSelector((state) => state.settings.cornerScheme);
-  const [currentCase, setCurrentCase] = useState<WeightedCase>({
+  const [currentCase, setCurrentCase] = useState<BldCase>({
     case_: [0, 0, 1, 0, 2, 0],
     name: "--",
-    index: -1,
-    weight: 0,
+    key: "",
     tags: [],
+    type: "bld",
   });
   const [startState, setStartState] = useState(cubeState);
   const targetState = generateCornerCase(currentCase);
   const caseName = replaced(currentCase.name, cornerScheme);
+
   const [lock, setLock] = useState(false);
   const [wrong, setWrong] = useState(false);
   const [reset, setReset] = useState(false);
+  const [forceCorrect, setForceCorrect] = useState(false);
+
   const [caseFilter, setCaseFilter] = useState<string[]>([]);
   const correct = compareStates(
     combineStates(startState, targetState),
@@ -81,19 +85,28 @@ export default function BldTrainer() {
   );
 
   useEffect(() => {
-    if ((correct && !lock) || wrong || reset) {
+    if ((correct && !lock) || forceCorrect || wrong || reset) {
       console.log("locking");
       setLock(true);
       setWrong(false);
       setReset(false);
-      if (correct) {
-        dispatch(markCornersCaseCorrect(currentCase.index));
+      setForceCorrect(false);
+      if (correct || forceCorrect) {
+        dispatch(markCaseCorrect(currentCase.key));
       } else if (wrong) {
-        dispatch(markCornersCaseIncorrect(currentCase.index));
+        dispatch(markCaseIncorrect(currentCase.key));
       }
 
       setTimeout(() => {
-        const _case = selectCase(filterCases(cases.corners, caseFilter));
+        const _case = selectCase(
+          filterCases(
+            Object.values(cases.cases)
+              .filter((x) => x.type === "bld")
+              .filter((x) => x.key.startsWith("corner")),
+            caseFilter
+          ),
+          weights
+        );
         setLock(false);
         setCurrentCase(_case);
         setStartState(cubeState);
@@ -107,17 +120,22 @@ export default function BldTrainer() {
     correct,
     lock,
     wrong,
+    forceCorrect,
     caseFilter,
     cubeState,
     cases,
     reset,
     currentCase,
     dispatch,
+    weights,
   ]);
 
   return (
     <div className="flex flex-col text-center h-96">
-      <div className="flex-auto" />
+      <div className="flex-auto flex flex-col">
+        <div className="flex-auto"></div>
+        <div>{corners ? "Corners" : "Edges"}</div>
+      </div>
       <div className="text-6xl font-mono">
         {lock ? "Locked" : correct ? "Solved" : caseName}
       </div>
@@ -141,6 +159,16 @@ export default function BldTrainer() {
           }}
         >
           Wrong
+        </button>
+
+        <button
+          className="btn btn-success flex-auto"
+          disabled={lock}
+          onClick={() => {
+            setForceCorrect(true);
+          }}
+        >
+          Force Correct
         </button>
       </div>
       <CaseFilter

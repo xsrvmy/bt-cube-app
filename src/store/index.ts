@@ -14,6 +14,7 @@ import cubeReducer, {
 } from "./cube.ts";
 import casesReducer from "./cases.ts";
 import settingsReducer from "./settings.ts";
+import weightsReducer from "./weights.ts";
 
 // const cubeReducer = (state = defaultCube, action) => {
 //   if (action.type === "MOVE") {
@@ -88,6 +89,7 @@ const rootReducer = combineReducers({
   cube: cubeReducer,
   cases: casesReducer,
   settings: settingsReducer,
+  weights: weightsReducer,
 });
 
 const store = configureStore({

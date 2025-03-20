@@ -1,13 +1,23 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { Corners } from "../utils/cube";
 
-export interface WeightedCase {
-  case_: [number, number, number, number, number, number];
-  weight: number;
-  index: number;
+export interface BaseCase {
+  key: string;
   name: string;
   tags: string[];
 }
+
+export type UnknownCase = BaseCase & {
+  case_: unknown;
+  type: "unknown";
+};
+
+export type BldCase = BaseCase & {
+  case_: [number, number, number, number, number, number];
+  type: "bld";
+};
+
+export type CubeCase = UnknownCase | BldCase;
 
 interface Tag {
   key: string;
@@ -18,17 +28,26 @@ interface CasesState {
   tags: {
     [key: string]: Tag;
   };
-  corners: WeightedCase[];
+  cases: {
+    [key: string]: CubeCase;
+  };
 }
 
 const defaultState: CasesState = {
-  corners: enumerateCycleCases(Corners.UFR, 0, 8, 3).map((x, i) => ({
-    case_: x,
-    name: `{corner-${x[2]}-${x[3]}}{corner-${x[4]}-${x[5]}}`,
-    weight: 1,
-    index: i,
-    tags: [`corner-${x[2]}-${x[3]}`, `corner-${x[4]}-${x[5]}`],
-  })),
+  cases: (() => {
+    const output: CasesState["cases"] = {};
+    enumerateCycleCases(Corners.UFR, 0, 8, 3).forEach((x) => {
+      const key = `corner-${x[0]}-${x[1]}-${x[2]}-${x[3]}-${x[4]}-${x[5]}`;
+      output[key] = {
+        case_: x,
+        name: `{corner-${x[2]}-${x[3]}}{corner-${x[4]}-${x[5]}}`,
+        key,
+        tags: [`corner-${x[2]}-${x[3]}`, `corner-${x[4]}-${x[5]}`],
+        type: "bld",
+      };
+    });
+    return output;
+  })(),
   tags: getCycleTags(Corners.UFR, 8, 3),
 };
 
@@ -72,21 +91,7 @@ function enumerateCycleCases(
 const casesSlice = createSlice({
   name: "cases",
   initialState: defaultState,
-  reducers: {
-    markCornersCaseCorrect: (state, action: PayloadAction<number>) => {
-      if (action.payload < 0) return;
-      state.corners[action.payload].weight *= 0.5;
-    },
-    markCornersCaseIncorrect: (state, action: PayloadAction<number>) => {
-      if (action.payload < 0) return;
-      state.corners[action.payload].weight *= 2;
-      if (state.corners[action.payload].weight < 2) {
-        state.corners[action.payload].weight = 2;
-      }
-    },
-  },
+  reducers: {},
 });
 
-export const { markCornersCaseCorrect, markCornersCaseIncorrect } =
-  casesSlice.actions;
 export default casesSlice.reducer;
