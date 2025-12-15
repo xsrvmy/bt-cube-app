@@ -31,7 +31,7 @@ const weightsSlice = createSlice({
         oldWeight: weight,
       };
 
-      state.data[key] = 0.5 * weight;
+      state.data[key] = Math.max(0.5 * weight, 0.5);
     },
     markCaseIncorrect: (state, action: PayloadAction<string | 0>) => {
       const key = action.payload === 0 ? state.previous?.key : action.payload;
