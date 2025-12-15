@@ -2,13 +2,12 @@ import { useRef } from "react";
 import FaceletCube from "./FaceletCube";
 import { useAppSelector } from "./hooks";
 import { dumpState, getFacelets } from "./utils/cube";
+import LastLayerCube from "./LastLayerCube";
 
 export default function Debug() {
   const facelets = useAppSelector((state) => state.cube.facelets);
   const cubeState = useAppSelector((state) => state.cube.cubeState);
   const dialog = useRef<HTMLDialogElement>(null);
-
-
 
   return (
     <>
@@ -27,6 +26,10 @@ export default function Debug() {
             facelets={getFacelets(cubeState)}
             className="w-72"
           ></FaceletCube>
+          <LastLayerCube
+            facelets={getFacelets(cubeState)}
+            className="w-32"
+          ></LastLayerCube>
           <textarea
             value={dumpState(cubeState)}
             className="textarea h-48 w-72"
