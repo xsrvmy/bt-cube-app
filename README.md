@@ -1,50 +1,15 @@
-# React + TypeScript + Vite
+This is my personal project to train algorithms using smart cubes. It is implemented using React and Redux.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The app requires Web Bluetooth and currently only supports GAN smart cubes and others that use the same protocols (eg. Moyu 2023).
+To connect a puzzle, enter its MAC address in the textbox then hit connect. You can view the state of the puzzle in the debug screen.
 
-Currently, two official plugins are available:
+The trainer works with the Speffz letter scheme and trains commutators starting at UFR (letter C). The probability of cases are weighted over time.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+On the technical side of things, the app uses a Redux middleware to process the events from the smart cube to store the current cube state in the Redux store.
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+Planned features:
+- Keyboard-controlled puzzle, so I am not stuck unable to test anything when my cube is out of batteries
+- Weilong AI v10 support
+- ZBLL Trainer
+  - I find that current trainers out there lack certain features, such as ignoring post-AUF
+- Edges
