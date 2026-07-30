@@ -39,6 +39,19 @@ const weilongV10CubeMiddleware: Middleware<{}, RootState> =
 
           console.log("Bluetooth connected");
 
+          const requestBattery = () => {
+            const batteryMsg = encrypter.encrypt(
+              Uint8Array.fromHex("A400000000000000000000000000000000000000"),
+            );
+            if (batteryMsg.byteLength != 20) {
+              throw new Error(
+                "Message has incorrect length. Not going to try to send it for safety",
+              );
+            }
+            // @ts-expect-error incorrect typing from bluetooth upstream
+            writeCharacteristic?.writeValueWithoutResponse(batteryMsg);
+          };
+
           await notifyCharacteristic?.startNotifications();
           notifyCharacteristic?.addEventListener(
             "characteristicvaluechanged",
@@ -64,6 +77,11 @@ const weilongV10CubeMiddleware: Middleware<{}, RootState> =
                   bytes[7] == "3".charCodeAt(0) &&
                   bytes[8] == "2".charCodeAt(0)
                 ) {
+                  // request the battery info immediately to check the results
+                  if (!store.getState().cube.connected) {
+                    console.log("Requesting battery");
+                    requestBattery();
+                  }
                   store.dispatch(connected());
                 }
               }
@@ -116,14 +134,9 @@ const weilongV10CubeMiddleware: Middleware<{}, RootState> =
 
           // @ts-expect-error incorrect typing from bluetooth upstream
           writeCharacteristic?.writeValueWithoutResponse(initMsg);
-
-          const batteryMsg = encrypter.encrypt(
-            Uint8Array.fromHex("A400000000000000000000000000000000000000"),
-          );
           const batteryInterval = setInterval(() => {
             if (store.getState().cube.connected) {
-              // @ts-expect-error incorrect typing from bluetooth upstream
-              writeCharacteristic?.writeValueWithoutResponse(batteryMsg);
+              requestBattery();
             }
           }, 10000);
 
