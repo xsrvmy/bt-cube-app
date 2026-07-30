@@ -1,6 +1,12 @@
 /// <reference types="web-bluetooth" />
 import type { Middleware } from "@reduxjs/toolkit";
-import { connected, move, setBattery, weilongV10Connect } from "../cube.ts";
+import {
+  connected,
+  disconnected,
+  move,
+  setBattery,
+  weilongV10Connect,
+} from "../cube.ts";
 import { WeilongV10CubeEncrypter } from "../../utils/encrypter.ts";
 import { Faces } from "../../utils/cube.ts";
 import type { RootState } from "../index.ts";
@@ -114,12 +120,17 @@ const weilongV10CubeMiddleware: Middleware<{}, RootState> =
           const batteryMsg = encrypter.encrypt(
             Uint8Array.fromHex("A400000000000000000000000000000000000000"),
           );
-          setInterval(() => {
+          const batteryInterval = setInterval(() => {
             if (store.getState().cube.connected) {
               // @ts-expect-error incorrect typing from bluetooth upstream
               writeCharacteristic?.writeValueWithoutResponse(batteryMsg);
             }
           }, 10000);
+
+          device.addEventListener("gattserverdisconnected", () => {
+            clearInterval(batteryInterval);
+            store.dispatch(disconnected());
+          });
         })();
       }
 

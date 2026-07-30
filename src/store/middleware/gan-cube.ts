@@ -1,6 +1,13 @@
 import type { Middleware } from "@reduxjs/toolkit";
 import { connectGanCube, type GanCubeConnection } from "gan-web-bluetooth";
-import { connect, connected, move, resetState, setFacelets } from "../cube.ts";
+import {
+  connect,
+  connected,
+  disconnected,
+  move,
+  resetState,
+  setFacelets,
+} from "../cube.ts";
 import type { RootState } from "../index.ts";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
@@ -37,6 +44,9 @@ const ganCubeMiddleware: Middleware<{}, RootState> = (store) => (next) => {
                 direction: e.direction,
               }),
             );
+          }
+          if (e.type === "DISCONNECT") {
+            store.dispatch(disconnected());
           }
         });
         store.dispatch(connected());

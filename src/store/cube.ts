@@ -49,6 +49,11 @@ const cubeSlice = createSlice({
       state.connected = true;
       state.connecting = false;
     },
+    disconnected: (state) => {
+      state.connected = false;
+      state.connecting = false;
+      state.battery = -1;
+    },
     setBattery: (state, action: PayloadAction<number>) => {
       state.battery = action.payload;
     },
@@ -63,6 +68,7 @@ export const {
   setFacelets,
   connect,
   connected,
+  disconnected,
   resetState,
   weilongV10Connect,
   setBattery,
