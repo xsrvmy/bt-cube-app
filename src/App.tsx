@@ -60,13 +60,22 @@ function App() {
       </div>
       <footer className="footer footer-center">
         <div>
-          <div>&copy; 2025 Rui Ming (Max) Xiong</div>
-          <a
-            href="https://github.com/xsrvmy/bt-cube-app"
-            className="link link-primary"
-          >
-            Source code
-          </a>
+          <div>&copy; 2026 Rui Ming (Max) Xiong</div>
+          <div>
+            <a
+              href="https://github.com/xsrvmy/bt-cube-app"
+              className="link link-primary"
+            >
+              Source code
+            </a>{" "}
+            released under the{" "}
+            <a
+              href="https://github.com/xsrvmy/bt-cube-app/blob/master/LICENSE"
+              className="link link-primary"
+            >
+              MIT License
+            </a>
+          </div>
           <div>
             Thanks to smartcube implementation by{" "}
             <a

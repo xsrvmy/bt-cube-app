@@ -22,4 +22,8 @@ Thanks to lukeburong for providing the [documentation](https://github.com/lukebu
 Third party licenses for external node packages can be found in [public/third-party.txt](public/third-party.txt).
 The Rubik font from is licensed under the [OFL](public/rubik-ofl.txt).
 
-Code in `src/utils/encrypter.ts` is slightly modified from [the encrypter from gan-web-bluetooth](https://github.com/afedotov/gan-web-bluetooth/blob/main/src/gan-cube-encrypter.ts). As I already use this package for the GAN protocol, its license is in the third party license file.
+## License
+
+[MIT](LICENSE)
+
+Code in `src/utils/encrypter.ts` is slightly modified from [the encrypter from gan-web-bluetooth](https://github.com/afedotov/gan-web-bluetooth/blob/main/src/gan-cube-encrypter.ts). As I already use this package for the GAN protocol, its license can be found in the third party license file.
