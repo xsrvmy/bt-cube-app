@@ -11,6 +11,7 @@ import {
 import { replaced } from "./utils/replace";
 import Settings from "./Settings";
 import type { BaseCase, BldCase } from "./store/cases";
+import BldCaseGrid from "./BldCaseGrid";
 
 function selectCase<P extends BaseCase>(
   cases: P[],
@@ -218,6 +219,7 @@ export default function BldTrainer() {
         }}
       />
       <Settings />
+      <BldCaseGrid />
     </div>
   );
 }
