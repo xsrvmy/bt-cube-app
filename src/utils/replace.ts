@@ -17,7 +17,7 @@ export function replaced(
   const replacements = generateReplacements(cornerScheme);
   let s = str;
   for (const k in replacements) {
-    s = s.replace(`{${k}}`, replacements[k]);
+    s = s.replaceAll(`{${k}}`, replacements[k]);
   }
   return s;
 }
