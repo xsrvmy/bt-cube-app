@@ -77,7 +77,7 @@ function App() {
             </a>
           </div>
           <div>
-            Thanks to smartcube implementation by{" "}
+            Thanks to GAN smartcube implementation by{" "}
             <a
               href="https://github.com/afedotov/gan-web-bluetooth"
               className="link link-primary"
