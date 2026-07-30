@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "./App.css";
 import { useAppDispatch, useAppSelector } from "./hooks";
 import { connect, resetState, weilongV10Connect } from "./store/cube";
 import Debug from "./Debug";
