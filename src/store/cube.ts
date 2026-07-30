@@ -6,6 +6,7 @@ interface CubeSliceState {
   cubeState: Cube;
   connected: boolean;
   connecting: boolean;
+  battery: number;
 }
 
 const defaultCube: CubeSliceState = {
@@ -13,6 +14,7 @@ const defaultCube: CubeSliceState = {
   cubeState: solvedCube,
   connected: false,
   connecting: false,
+  battery: -1,
 };
 
 const cubeSlice = createSlice({
@@ -47,6 +49,9 @@ const cubeSlice = createSlice({
       state.connected = true;
       state.connecting = false;
     },
+    setBattery: (state, action: PayloadAction<number>) => {
+      state.battery = action.payload;
+    },
     resetState: (state) => {
       state.cubeState = solvedCube;
     },
@@ -60,5 +65,6 @@ export const {
   connected,
   resetState,
   weilongV10Connect,
+  setBattery,
 } = cubeSlice.actions;
 export default cubeSlice.reducer;

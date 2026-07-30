@@ -7,6 +7,7 @@ import LastLayerCube from "./LastLayerCube";
 export default function Debug() {
   const facelets = useAppSelector((state) => state.cube.facelets);
   const cubeState = useAppSelector((state) => state.cube.cubeState);
+  const batteryLevel = useAppSelector(state => state.cube.battery);
   const dialog = useRef<HTMLDialogElement>(null);
 
   return (
@@ -15,7 +16,9 @@ export default function Debug() {
         className="btn btn-secondary"
         onClick={() => dialog.current?.showModal()}
       >
-        Debug
+        Debug{
+          (batteryLevel > 0) && ` (${batteryLevel}% BAT)`
+        }
       </button>
       <dialog className="modal" ref={dialog}>
         <div className="modal-box">
