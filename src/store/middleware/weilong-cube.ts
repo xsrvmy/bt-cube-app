@@ -1,9 +1,9 @@
 /// <reference types="web-bluetooth" />
-import { Middleware } from "@reduxjs/toolkit";
+import type { Middleware } from "@reduxjs/toolkit";
 import { connected, move, weilongV10Connect } from "../cube.ts";
 import { WeilongV10CubeEncrypter } from "../../utils/encrypter.ts";
 import { Faces } from "../../utils/cube.ts";
-import { RootState } from "../index.ts";
+import type { RootState } from "../index.ts";
 
 const weilongV10CubeMiddleware: Middleware<{}, RootState> =
   (store) => (next) => {

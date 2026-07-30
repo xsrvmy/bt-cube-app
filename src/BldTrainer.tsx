@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "./hooks";
-import { combineStates, compareStates, Cube } from "./utils/cube";
+import { combineStates, compareStates, type Cube } from "./utils/cube";
 import CaseFilter from "./CaseFilter";
 import {
   clearPrevious,
@@ -10,11 +10,11 @@ import {
 } from "./store/weights";
 import { replaced } from "./utils/replace";
 import Settings from "./Settings";
-import { BaseCase, BldCase } from "./store/cases";
+import type { BaseCase, BldCase } from "./store/cases";
 
 function selectCase<P extends BaseCase>(
   cases: P[],
-  weights: { [key: string]: number }
+  weights: { [key: string]: number },
 ): P {
   const sum = cases.map((x) => weights[x.key] || 1).reduce((x, y) => x + y, 0);
   let rand = Math.random() * sum;
@@ -86,7 +86,7 @@ export default function BldTrainer() {
   const [caseFilter, setCaseFilter] = useState<string[]>([]);
   const correct = compareStates(
     combineStates(startState, targetState),
-    cubeState
+    cubeState,
   );
 
   useEffect(() => {
@@ -108,9 +108,9 @@ export default function BldTrainer() {
             Object.values(cases.cases)
               .filter((x) => x.type === "bld")
               .filter((x) => x.key.startsWith("corner")),
-            caseFilter
+            caseFilter,
           ),
-          weights
+          weights,
         );
         setLock(false);
         setCurrentCase(_case);

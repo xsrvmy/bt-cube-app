@@ -1,28 +1,28 @@
-export enum Edges {
-  UR,
-  UF,
-  UL,
-  UB,
-  DR,
-  DF,
-  DL,
-  DB,
-  FR,
-  FL,
-  BL,
-  BR,
-}
+export const Edges = {
+  UR: 0,
+  UF: 1,
+  UL: 2,
+  UB: 3,
+  DR: 4,
+  DF: 5,
+  DL: 6,
+  DB: 7,
+  FR: 8,
+  FL: 9,
+  BL: 10,
+  BR: 11,
+} as const;
 const ES = ["UUUUDDDDFFBB", "RFLBRFLBRLLR", "UUUUDDDDFFBB", "RFLBRFLBRLLR"];
 
-export enum Corners {
-  UFR,
-  UFL,
-  UBL,
-  UBR,
-  DFR,
-  DFL,
-  DBL,
-  DBR,
+export const Corners = {
+  UFR: 0,
+  UFL: 1,
+  UBL: 2,
+  UBR: 3,
+  DFR: 4,
+  DFL: 5,
+  DBL: 6,
+  DBR: 7,
 }
 
 const CS = [
@@ -34,13 +34,13 @@ const CS = [
   "RFLBFLBR",
 ];
 
-export enum Faces {
-  U,
-  R,
-  F,
-  D,
-  L,
-  B,
+export const Faces = {
+  U: 0,
+  R: 1,
+  F: 2,
+  D: 3,
+  L: 4,
+  B: 5,
 }
 
 export interface Cube {
@@ -143,8 +143,8 @@ export function applyMove(cube: Cube, face: number, direction: number) {
 
 export function getFacelets(cube: Cube): string {
   const { co, cp, eo, ep } = cube;
-  const cs = (c: Corners, o = 0) => CS[co[c] + o][cp[c]];
-  const es = (e: Edges, o = 0) => ES[eo[e] + o][ep[e]];
+  const cs = (c: number, o = 0) => CS[co[c] + o][cp[c]];
+  const es = (e: number, o = 0) => ES[eo[e] + o][ep[e]];
   return (
     (
       (cs(Corners.UBL) + es(Edges.UB) + cs(Corners.UBR)) +
@@ -203,5 +203,5 @@ export function compareStates(state1: Cube, state2: Cube): boolean {
     if (state2.eo[i] !== state1.eo[i] || state2.ep[i] !== state1.ep[i])
       return false;
   }
-  return true
+  return true;
 }

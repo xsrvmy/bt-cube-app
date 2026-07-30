@@ -1,5 +1,5 @@
 import { createListenerMiddleware } from "@reduxjs/toolkit";
-import { RootState } from "..";
+import type { RootState } from "..";
 
 const saveStoreMiddleware = createListenerMiddleware();
 saveStoreMiddleware.startListening.withTypes<RootState>()({

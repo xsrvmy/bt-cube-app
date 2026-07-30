@@ -1,15 +1,7 @@
-import {
-  Middleware,
-} from "@reduxjs/toolkit";
-import { connectGanCube, GanCubeConnection } from "gan-web-bluetooth";
-import {
-  connect,
-  connected,
-  move,
-  resetState,
-  setFacelets,
-} from "../cube.ts";
-import { RootState } from "../index.ts";
+import type { Middleware } from "@reduxjs/toolkit";
+import { connectGanCube, type GanCubeConnection } from "gan-web-bluetooth";
+import { connect, connected, move, resetState, setFacelets } from "../cube.ts";
+import type { RootState } from "../index.ts";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 const ganCubeMiddleware: Middleware<{}, RootState> = (store) => (next) => {
