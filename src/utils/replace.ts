@@ -10,8 +10,10 @@ function generateReplacements(cornerScheme: [string, string, string]) {
   return output;
 }
 
-
-export function replaced(str: string, cornerScheme: [string, string, string]): string {
+export function replaced(
+  str: string,
+  cornerScheme: [string, string, string],
+): string {
   const replacements = generateReplacements(cornerScheme);
   let s = str;
   for (const k in replacements) {

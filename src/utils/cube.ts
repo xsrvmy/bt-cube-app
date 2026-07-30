@@ -23,7 +23,7 @@ export const Corners = {
   DFL: 5,
   DBL: 6,
   DBR: 7,
-}
+};
 
 const CS = [
   "UUUUDDDD",
@@ -41,7 +41,7 @@ export const Faces = {
   D: 3,
   L: 4,
   B: 5,
-}
+};
 
 export interface Cube {
   co: number[];

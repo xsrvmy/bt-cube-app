@@ -12,7 +12,7 @@ export default function LetterSchemeEditor({ className }: P) {
 
   function changeCorners() {
     const scheme = prompt(
-      "Enter your letter scheme, following the speffz order:"
+      "Enter your letter scheme, following the speffz order:",
     );
     if (!scheme) return;
     if (scheme.length !== 24) {

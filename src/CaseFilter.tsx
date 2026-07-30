@@ -29,9 +29,7 @@ export default function CaseFilter({ filters, className, onChange }: P) {
             {filters.map((c, i) => (
               <div className="join" key={i}>
                 <button
-                  className={`btn btn-xs join-item ${
-                    c[1] ? "btn-success" : ""
-                  }`}
+                  className={`btn btn-xs join-item ${c[1] ? "btn-success" : ""}`}
                   onClick={() => {
                     const newCases = [...filters];
                     newCases[i] = [newCases[i][0], !c[1]];

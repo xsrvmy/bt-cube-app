@@ -1,7 +1,7 @@
 {
   "name": "bt-cube-app",
-  "private": true,
   "version": "0.0.0",
+  "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -28,6 +28,7 @@
     "@types/react-dom": "^19.2.3",
     "@types/web-bluetooth": "^0.0.21",
     "@vitejs/plugin-react": "^6.0.5",
+    "oxfmt": "^0.61.0",
     "oxlint": "^1.76.0",
     "typescript": "^6.0.3",
     "vite": "^8.2.0",

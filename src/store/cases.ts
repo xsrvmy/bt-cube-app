@@ -71,7 +71,7 @@ function enumerateCycleCases(
   buffer: number,
   bo: number,
   pieceCount: number,
-  oLimit: number
+  oLimit: number,
 ): [number, number, number, number, number, number][] {
   const cases: [number, number, number, number, number, number][] = [];
   for (let i = 0; i < pieceCount; ++i) {

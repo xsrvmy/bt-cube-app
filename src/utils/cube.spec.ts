@@ -34,4 +34,4 @@ test("combineStates", () => {
 
 test("compareStates", () => {
   expect(compareStates(state1, state1_copy)).toBe(true);
-})
+});
