@@ -21,23 +21,26 @@ const cubeSlice = createSlice({
   reducers: {
     move: (
       state,
-      action: PayloadAction<{ face: number; direction: number }>
+      action: PayloadAction<{ face: number; direction: number }>,
     ) => {
       state.cubeState = applyMove(
         state.cubeState,
         action.payload.face,
-        action.payload.direction
+        action.payload.direction,
       );
     },
     setFacelets: (
       state,
-      action: PayloadAction<{ facelets: string; cubeState: Cube }>
+      action: PayloadAction<{ facelets: string; cubeState: Cube }>,
     ) => {
       state.facelets = action.payload.facelets;
       state.cubeState = action.payload.cubeState;
     },
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     connect: (state, _: PayloadAction<string>) => {
+      state.connecting = true;
+    },
+    weilongV10Connect: (state, _: PayloadAction<string>) => {
       state.connecting = true;
     },
     connected: (state) => {
@@ -50,6 +53,12 @@ const cubeSlice = createSlice({
   },
 });
 
-export const { move, setFacelets, connect, connected, resetState } =
-  cubeSlice.actions;
+export const {
+  move,
+  setFacelets,
+  connect,
+  connected,
+  resetState,
+  weilongV10Connect,
+} = cubeSlice.actions;
 export default cubeSlice.reducer;

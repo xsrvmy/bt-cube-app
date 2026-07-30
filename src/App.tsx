@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import { useAppDispatch, useAppSelector } from "./hooks";
-import { connect, resetState } from "./store/cube";
+import { connect, resetState, weilongV10Connect } from "./store/cube";
 import Debug from "./Debug";
 import BldTrainer from "./BldTrainer";
 
@@ -10,6 +10,7 @@ function App() {
   const connecting = useAppSelector((state) => state.cube.connecting);
   const connected = useAppSelector((state) => state.cube.connected);
   const [mac, setMac] = useState("");
+  const [weilong, setWeilong] = useState(true);
 
   return (
     <>
@@ -38,9 +39,17 @@ function App() {
                 onChange={(e) => setMac(e.target.value)}
               />
               {mac}
+              <input
+                type="checkbox"
+                checked={weilong}
+                onChange={(e) => setWeilong(e.target.checked)}
+              />
+              Weilong V10?
               <button
                 className="btn btn-primary"
-                onClick={() => dispatch(connect(mac))}
+                onClick={() =>
+                  dispatch(weilong ? weilongV10Connect(mac) : connect(mac))
+                }
                 disabled={connecting}
               >
                 Connect{connecting && "ing"}
