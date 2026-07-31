@@ -59,8 +59,8 @@ function App() {
       </div>
       <footer className="footer footer-center">
         <div>
-          <div>&copy; 2026 Rui Ming (Max) Xiong</div>
           <div>
+            &copy; 2026 Rui Ming (Max) Xiong,{" "}
             <a
               href="https://github.com/xsrvmy/bt-cube-app"
               className="link link-primary"
@@ -74,6 +74,9 @@ function App() {
             >
               MIT License
             </a>
+          </div>
+          <div>
+            Built at {import.meta.env.VITE_BUILD_TIME || import.meta.env.MODE}
           </div>
           <div>
             Thanks to GAN smartcube implementation by{" "}
